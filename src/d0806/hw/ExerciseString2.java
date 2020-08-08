@@ -19,9 +19,17 @@ public class ExerciseString2 {
      **/
     private static final String CHINA_MOBILE_PATTERN = "134,135,136,137,138,139,150,151,152,158,159,182,183,184,147,178,184";
 
+    //身份证省份代码
+    /*private static final String PROVINCE = "";*/
+
+    //垃圾邮箱词汇
+    private static final String E_MAIL = "马上买,最优价格,朋友,哈喽,最低价,免风险,点击下面,会员,订阅,优惠,相关重要信息,试用,账单,信用,保险,挣钱,垃圾邮件,免费,赢家,百万美元,支票,老板,密码,电话,恭喜,客户,打开,认证,豪华,申请";
+
     public static void main(String[] args) {
         ExerciseString2 e2 = new ExerciseString2();
-        e2.getISP("13017842235");
+        System.out.println("该电话所在运营商为:" + e2.getISP("18917842235"));
+        e2.parseId("430204200003252020");
+        System.out.println("该邮箱敏感词汇:" + e2.checkJunkMail("这次活动很优惠，一定要马上买，还能免费试用一个月") + "个");
     }
 
     /**
@@ -67,19 +75,20 @@ public class ExerciseString2 {
         int index = 0;
         if (Arrays.binarySearch(dx, pre) >= 0) {
             index = Arrays.binarySearch(dx, pre);
-            System.out.println("该手机号运营商为:" + "中国电信");
+            return "中国电信";
         } else if (Arrays.binarySearch(lt, pre) >= 0) {
             index = Arrays.binarySearch(lt, pre);
-            System.out.println("该手机号运营商为:" + "中国联通");
+            return "中国联通";
         } else if (Arrays.binarySearch(yd, pre) >= 0) {
             index = Arrays.binarySearch(yd, pre);
-            System.out.println("该手机号运营商为:" + "中国移动");
+            return "中国移动";
+        } else {
+            return "未知号码";
         }
         //System.out.println(index);
         /*int index = Arrays.binarySearch(lt,pre);
         System.out.println(index);
 */
-        return "中国电信 or 中国联通 or 中国移动";
     }
 
     /**
@@ -97,7 +106,37 @@ public class ExerciseString2 {
      * 其他代码：显示原值
      */
     public void parseId(String id) {
+        while (true) {
+            if (id.length() == 18) {
+                String province = id.substring(0, 2);
+                String city = id.substring(2, 4);
+                String county = id.substring(4, 6);
+                System.out.println("该身份证所在省份代码:" + province + " 城市代码:" + city + " 区县代码" + county);
 
+                String year = id.substring(6, 10);
+                String mon = id.substring(10, 12);
+                String day = id.substring(12, 14);
+                System.out.println("生日:" + year + "年" + mon + "月" + day + "日");
+
+                String place = id.substring(14, 16);
+                System.out.println("所在地派出所代码:" + place);
+
+                String sex = id.substring(16, 17);
+                int s = Integer.parseInt(sex);
+                if (s % 2 == 0) {
+                    System.out.println("性别:女");
+                } else {
+                    System.out.println("性别:男");
+                }
+
+                String x = id.substring(17, 18);
+                System.out.println("校验码:" + x);
+                break;
+            } else {
+                System.out.println("您输入的身份证号码有误,请重新输入!");
+                break;
+            }
+        }
     }
 
     /**
@@ -108,7 +147,25 @@ public class ExerciseString2 {
      * @param email
      */
     public int checkJunkMail(String email) {
-        return 0;
+        String[] em = E_MAIL.split(",");
+        Arrays.sort(em);
+
+        int count = 0;
+        for (int i = 0; i < em.length; i++) {
+            if (email.contains(em[i])) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            System.out.println("该邮件安全等级为:A");
+        } else if (count > 0 && count <= 5) {
+            System.out.println("该邮件安全等级为:B");
+        } else if (count > 5 && count <= 10) {
+            System.out.println("该邮箱安全等级为:C");
+        } else {
+            System.out.println("该邮箱敏感词汇过多，请勿点开!");
+        }
+        return count;
     }
 
 }
