@@ -1,6 +1,7 @@
 package d0806.hw;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class ExerciseString2 {
     /**
@@ -26,10 +27,17 @@ public class ExerciseString2 {
     private static final String E_MAIL = "马上买,最优价格,朋友,哈喽,最低价,免风险,点击下面,会员,订阅,优惠,相关重要信息,试用,账单,信用,保险,挣钱,垃圾邮件,免费,赢家,百万美元,支票,老板,密码,电话,恭喜,客户,打开,认证,豪华,申请";
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入电话号码:");
+        String s1 = sc.next();
         ExerciseString2 e2 = new ExerciseString2();
-        System.out.println("该电话所在运营商为:" + e2.getISP("18917842235"));
-        e2.parseId("430204200003252020");
-        System.out.println("该邮箱敏感词汇:" + e2.checkJunkMail("这次活动很优惠，一定要马上买，还能免费试用一个月") + "个");
+        System.out.println("该电话所在运营商为:" + e2.getISP(s1));
+        System.out.println("请输入身份证号:");
+        String s2 = sc.next();
+        e2.parseId(s2);
+        System.out.println("请输入要查询的邮箱内容:");
+        String s3 = sc.next();
+        System.out.println("该邮箱敏感词汇:" + e2.checkJunkMail(s3) + "个");
     }
 
     /**
