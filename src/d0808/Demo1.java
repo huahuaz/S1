@@ -1,7 +1,5 @@
 package d0808;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -10,7 +8,7 @@ public class Demo1 {
         //只要是List 下面的类，他们可以完全替代
         //ArrayList 内部使用数组存放元素，查询快，插入慢 线程不安全 速度快
         //List l1 = new ArrayList();
-        //LinkedList 内部使用链表存放元素 查询慢，插入块
+        //LinkedList 内部使用链表存放元素 查询慢，插入快
         //List l1 = new LinkedList();
         //内部使用数组存放元素 线程安全 多线程 速度慢
         List<Integer> l1 = new Vector();
