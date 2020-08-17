@@ -3,11 +3,60 @@ package d0814;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class DBHelperTest {
+    @Test
+    public void testZhuan() {
+        int param = 2000;
+        String sql1 = "update bank_account set balance = balance - ? where id=?";
+        String sql2 = "update bank_account set balance = balance + ? where id=?";
+        String sql3 = "insert into bank_oprecord values(bank_seq.nextval,?,?,sysdate)";
+        String sql4 = "insert into bank_oprecord values(bank_seq.nextval,?,?,sysdate)";
+        String sql5 = "select * from bank_account where id=?";
+        DBHelper dbh = null;
+        try {
+            dbh = new DBHelper();
+            Map<String, Object> map = dbh.selectOne(sql5, 2);
+            BigDecimal big = (BigDecimal) map.get("BALANCE");
+            Integer in = Integer.parseInt(big.toString());
+            if (in >= param && dbh.update(sql1, param, 2) == 1) {
+                if (dbh.update(sql2, param, 1) == 1) {
+                    dbh.update(sql3, 2, param);
+                    dbh.update(sql4, 1, param);
+                }
+                dbh.commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            dbh.rollback();
+        } finally {
+            dbh.close();
+        }
+    }
+
+    @Test
+    public void testInsert() {
+        String sql1 = "insert into bank_account values(?,?,?)";
+        String sql2 = "insert into bank_oprecord values(bank_seq.nextval,?,?,sysdate)";
+        DBHelper dbh = null;
+        try {
+            dbh = new DBHelper();
+            if (dbh.update(sql1, 2, "吴邪", 10000) == 1) {
+                dbh.update(sql2, 2, 10000);
+            }
+            dbh.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbh.rollback();
+        } finally {
+            dbh.close();
+        }
+    }
+
     @Test
     public void testTransactional() {
         String sql1 = "update bank_account set balance = balance + ? where id=?";
@@ -73,7 +122,8 @@ public class DBHelperTest {
         }
     }
 
-    public static void test3() {
+    @Test
+    public void test3() {
         DBHelper dbh = null;
         try {
             dbh = new DBHelper();
@@ -87,7 +137,8 @@ public class DBHelperTest {
         }
     }
 
-    public static void test2() {
+    @Test
+    public void test2() {
         DBHelper dbh = null;
         try {
             dbh = new DBHelper();

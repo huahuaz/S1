@@ -44,8 +44,9 @@ public class DBHelper {
     public int update(String sql, Object... param) throws SQLException {
         //创建预编译语句对象 ==> 它是普通语句对象的子类
         PreparedStatement ps = conn.prepareStatement(sql);
-        //打印sql
-        System.out.println(sql);
+        //打印sql 和 参数
+        System.out.println("SQL:" + sql);
+        System.out.println("参数:" + Arrays.toString(param));
         //在执行语句前，将参数设置到sql语句中，用setXXX
         for (int i = 0; i < param.length; i++) {
             ps.setObject(i + 1, param[i]);
