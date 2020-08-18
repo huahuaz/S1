@@ -10,23 +10,22 @@ import java.util.Map;
 
 public class DBHelperTest {
     @Test
-    public void testZhuan() {
+    public void testTransfer() {
         int param = 5000;
         String sql1 = "update bank_account set balance = balance - ? where id=?";
         String sql2 = "update bank_account set balance = balance + ? where id=?";
         String sql3 = "insert into bank_oprecord values(bank_seq.nextval,?,?,sysdate)";
-        String sql4 = "insert into bank_oprecord values(bank_seq.nextval,?,?,sysdate)";
-        String sql5 = "select * from bank_account where id=?";
+        String sql4 = "select * from bank_account where id=?";
         DBHelper dbh = null;
         try {
             dbh = new DBHelper();
-            Map<String, Object> map = dbh.selectOne(sql5, 1);
+            Map<String, Object> map = dbh.selectOne(sql4, 1);
             BigDecimal big = (BigDecimal) map.get("BALANCE");
             Integer in = Integer.parseInt(big.toString());
             if (in >= param && dbh.update(sql1, param, 1) == 1) {
                 if (dbh.update(sql2, param, 2) == 1) {
                     dbh.update(sql3, 2, param);
-                    dbh.update(sql4, 1, param);
+                    dbh.update(sql3, 1, param);
                 }
                 System.out.println("转账成功!");
                 dbh.commit();
